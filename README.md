@@ -4,4 +4,4 @@
 * Anthony MAIA
 * Josselin MARNAT
 * Romain MOUTRILLE
-* Hugo STINDEL (teste un truc)
+* Hugo STINDEL
