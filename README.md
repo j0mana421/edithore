@@ -1,4 +1,4 @@
-# Edithore++
+# Editore++
 ## Éditeur de fichiers avec gestionnaire de versions.
 
 * Anthony MAIA
