@@ -1,0 +1,65 @@
+<HTML>
+<HEAD>
+	<META NAME = "author" CONTENT = "MAIA Anthony, MARNAT Josselin, MOUTRILLE Romain, STINDEL Hugo">
+	<META NAME = "description" CONTENT = "page d'accueil">
+	<META NAME = "keywords" CONTENT = "éditore++, éditeur, édition, fichier">
+	<meta charset="iso-8859-1">
+	<title>Inscription</title>
+  <link rel="stylesheet" href="style_formulaire.css">
+</HEAD>
+<BODY>
+	<form action="Inscription" method="post" name="formulaire_inscription">
+	  
+	  <label>Pseudo</label>
+	  <input type="text" id="peusdo" name="pseudo" required>
+
+	  <label>Adresse e-mail :</label>
+	  <input type="email" id="addr_mail" name="addr_mail" required>
+	  
+	  <label>Confirmez l'adresse e-mail :</label>
+	  <input type="email" id="verif_mail" required oninput="check_mail(this)">
+	  
+	  <label>Mot de passe</label>
+	  <input type="password" id="mdp" name="mdp"required>
+
+	  <label>Confirmation mot de passe</label>
+	  <input type="password" id="verif_mdp" required oninput="check_mdp(this)">
+
+
+	  <input type="submit" id="envoi" onclick="check">
+	</form>
+ 
+	<script>
+		function check_mail(input) {
+			if (input.value != document.getElementById("addr_mail").value) {
+				input.setCustomValidity("Les deux adresses e-mail ne correspondent pas.");
+			} else {
+				input.setCustomValidity("");
+			}
+		}
+
+		function check_mdp(input) {
+			if (input.value != document.getElementById("mdp").value) {
+				input.setCustomValidity("Les deux mot de passe ne correspondent pas.");
+			} else {
+				input.setCustomValidity("");
+			}
+		}
+
+		function check()
+		{
+			if (input.value != document.getElementById("addr_mail").value) {
+				input.setCustomValidity("Les deux adresses e-mail ne correspondent pas.");
+			} else {
+				input.setCustomValidity("");
+			}
+			
+			if (input.value != document.getElementById("mdp").value) {
+				input.setCustomValidity("Les deux mot de passe ne correspondent pas.");
+			} else {
+				input.setCustomValidity("");
+			}
+		}
+	</script>
+</BODY>
+</HTML>
