@@ -20,10 +20,10 @@
       <input type="submit" value="OK"></input>
       <input type="text" name="recherche-fichier" placeholder="Recherche fichier" size=30></input>
       <input type="submit" value="OK"></input>
-<%
-session = request.getSession();
-String pseudo = (String) session.getAttribute("nom");
-%>
+	<%
+		session = request.getSession();
+		String pseudo = (String) session.getAttribute("nom");
+	%>
       <hr>Bonjour <%= pseudo %><hr>
       Bienvenue dans votre gestionnaire de fichiers
       <br>
@@ -49,32 +49,29 @@ String pseudo = (String) session.getAttribute("nom");
     <%@page import="javax.swing.JFrame"%>
     <%@page import="java.awt.BorderLayout"%>
     <%@page import="projet.RequetesSQL"%>
+    <%@page import="projet.VueSQL"%>
     <%@page import="projet.TablePanel"%>
-    <%
-    RequetesSQL dbc= new RequetesSQL();
-    JFrame mainFrame = new JFrame( "Affiche table " );
-    mainFrame.add(dbc.afficheFichier(pseudo), BorderLayout.CENTER);
-    mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
-    mainFrame.setSize( 640, 480 );
-    mainFrame.setVisible( true );
-    %>
+    <%=VueSQL.listeFichiers(RequetesSQL.listeFichiers(pseudo))%>
     
     <hr>
-    <h2>Chat de l'application :</h2>
-    <div id="chat" style="dispay:block; width:100%; border: solid 1px red;">
-	    <iframe src="Chat.jsp" style="width: 100%; border: solid 1px green;"></iframe>
+    <div id="chat" style="dispay:block; width:100%; border: none;">
+	    
 		<form action="/Projet/SendMessage" method="post">
-			<select name="dest">
-				<optgroup label="Groupes :">
-					<option value="#all">Tout le monde</option>
-				</optgroup>
-				<optgroup label="Personnes :">
-					<%@ page import="projet.Tracker" %>
-					<%=Tracker.listeMachines()%>
-				</optgroup>
-			</select>
-			<input type="text" name="txt" value="votre message ici"/>
-			<input type="submit" value="Envoyer" />
+			<fieldset>
+				<legend>Chat de l'application</legend>
+				<iframe src="Chat.jsp" style="width: 100%; border: dashed 1px gray;"></iframe>
+				<select name="dest">
+					<optgroup label="Groupes :">
+						<option value="#all">Tout le monde</option>
+					</optgroup>
+					<optgroup label="Personnes :">
+						<%@ page import="projet.Tracker" %>
+						<%=Tracker.listeMachines()%>
+					</optgroup>
+				</select>
+				<input type="text" name="txt" value="votre message ici"/>
+				<input type="submit" value="Envoyer" />
+			</fieldset>
 		</form>
     </div>
 </body>

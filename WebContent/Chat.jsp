@@ -6,8 +6,7 @@
 		<title>Chat</title>
 	</head>
 	<body>
-		Chat de l'application :
-		<div id="chat_appli" style="height:6em; overflow: scroll; border: dashed 1px gray;">
+		<div id="chat_appli" style="height:100%; overflow: scroll; border: none;">
 			<%@ page import="projet.ChatApplication" %>
 			<%= ChatApplication.affiche() %>
 		</div>

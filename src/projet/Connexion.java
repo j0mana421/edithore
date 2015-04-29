@@ -44,7 +44,7 @@ public class Connexion extends HttpServlet {
 		System.out.println("REM ADR : "+req.getRemoteAddr());
 		Tracker.ajouteMachine(identifiant, req.getRemoteAddr());
 		try {
-			if(dbc.verifUtilisateur(identifiant, mdp)){
+			if(RequetesSQL.verifUtilisateur(identifiant, mdp)){
 				HttpSession session = req.getSession();
 				session.setAttribute("nom",identifiant);
 				PrintWriter out= res.getWriter();	

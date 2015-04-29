@@ -40,6 +40,7 @@ public class Connect {
 				return rs;
 			}catch (SQLException e){
 				e.printStackTrace();
+				System.err.println("REQUETTE : "+query);
 			}
 		}
 		else if (type=='m'){

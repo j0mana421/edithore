@@ -1,15 +1,15 @@
 package projet;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * @author MAIA MARNAT MOUTRILLE STINDEL
  * 
  */
 public class RequetesSQL {  
-	Connect c;
+	private static Connect c;
 
 	/**
 	 * @param pseudo
@@ -22,10 +22,10 @@ public class RequetesSQL {
 	public String creerUtilisateur(final String pseudo, final String mail, final String mdp) throws SQLException, ClassNotFoundException{
 		c=new Connect();
 		String chaine;
-		ResultSet rs =c.reqSQL("SELECT MAX(id_u) FROM utilisateurs",'s');
+		ResultSet rs =c.reqSQL("SELECT MAX(id) FROM Utilisateurs",'s');
 		rs.next();
 		int num =Integer.parseInt(rs.getString(1))+1;
-		chaine= "INSERT INTO utilisateurs VALUES ('"+num+"', '"+pseudo+"','"+mail+"','"+mdp+"')";
+		chaine= "INSERT INTO Utilisateurs VALUES ('"+num+"', '"+pseudo+"','"+mail+"','"+mdp+"')";
 		c.reqSQL(chaine, 'm');
 		c.close();
 		return chaine;
@@ -38,9 +38,9 @@ public class RequetesSQL {
 	 * @throws SQLException
 	 * @throws ClassNotFoundException
 	 */
-	public boolean verifUtilisateur(String psd, String motdp) throws SQLException, ClassNotFoundException{
+	public static boolean verifUtilisateur(String psd, String motdp) throws SQLException, ClassNotFoundException{
 		c=new Connect();
-		ResultSet rs = c.reqSQL("SELECT id_u FROM utilisateurs WHERE pseudo='"+psd+"' AND mdp='"+motdp+"'", 's');
+		ResultSet rs = c.reqSQL("SELECT id FROM Utilisateurs WHERE pseudo='"+psd+"' AND mdp='"+motdp+"'", 's');
 		if(rs.first()){
 			c.close();
 			return true;
@@ -51,7 +51,8 @@ public class RequetesSQL {
 
 	/**
 	 * @param pseudo
-	 * @param nomFichier
+	 * @param nomAff
+	 * @param nomStock 
 	 * @param description
 	 * @param fichier
 	 * @param type
@@ -59,7 +60,7 @@ public class RequetesSQL {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	public void addFichier(String pseudo, String nomFichier, String description,InputStream fichier,String type, java.sql.Date date) throws SQLException, IOException{
+	public void addFichier(String pseudo, String nomAff, String nomStock, String description, String type, java.sql.Date date) throws SQLException, IOException{
 		try {
 			c=new Connect();
 		} catch (ClassNotFoundException | SQLException e) {
@@ -67,11 +68,22 @@ public class RequetesSQL {
 			e.printStackTrace();
 		}
 		
-		ResultSet rs =c.reqSQL("SELECT MAX(id) FROM documents",'s');
+		ResultSet rs =c.reqSQL("SELECT MAX(id) FROM Fichiers",'s');
 		rs.next();
-		int num =Integer.parseInt(rs.getString(1))+1;;
-		String chaine= "INSERT INTO documents VALUES ('"+num+"', '"+pseudo+"', '"+nomFichier+"','"+description+"','"+fichier+"','"+type+"','"+date+"')";
-		c.reqSQL(chaine, 'm');
+		int idFic = Integer.parseInt(rs.getString(1))+1;
+		
+		rs = c.reqSQL("SELECT id FROM Utilisateurs WHERE pseudo=\""+pseudo+"\"",'s');
+		rs.next();
+		int idCreat = Integer.parseInt(rs.getString("id"));
+		int idDernierUser = idCreat; // TODO
+		
+		// insertion dans Fichiers
+		String req= "INSERT INTO Fichiers VALUES ('"+idFic+"', '"+idCreat+"','"+idDernierUser+"','"+nomAff+"','"+nomStock+"','"+description+"','"+type+"','"+date+"')";
+		c.reqSQL(req, 'm');
+		
+		// création du droit au fichier
+		req = "INSERT INTO DroitsFichiers VALUES (NULL,'"+idCreat+"','"+idFic+"')";
+		c.reqSQL(req, 'm');
 		c.close();
 	}
 	
@@ -84,12 +96,30 @@ public class RequetesSQL {
 		try {
 			c=new Connect();
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ResultSetTableModel rtm = new ResultSetTableModel(c.reqSQL("SELECT * FROM documents WHERE pseudo='"+psd+"'", 's'));
 		TablePanel tablePanel = new TablePanel( rtm );
 		return tablePanel;
+	}
+	
+	/**
+	 * @param user le nom de l'utilisateur
+	 * @return le tableau des fichiers accessibles à un utilisateur
+	 */
+	public static ResultSet listeFichiers(String user) {
+		String req = "SELECT * FROM Fichiers, DroitsFichiers, Utilisateurs"
+			+ " WHERE Utilisateurs.pseudo = '"+user+"'"
+			+ " AND DroitsFichiers.idUser = Utilisateurs.id"
+			+ " AND DroitsFichiers.idFichier = Fichiers.id";
+		ResultSet rs = null;
+		try {
+			c = new Connect();
+			rs = c.reqSQL(req, 's');
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return(rs);
 	}
 	
 }
