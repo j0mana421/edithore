@@ -1,43 +1,34 @@
 package projet;
 
-import java.net.*;
 import java.io.*;
+import java.net.*;
 
-/*
-* Usage: Client <filename>
-* Lookup a file across one or more server(s), and bring it here.
-* List of server IP addresses should be in local "server.in" text file
-* (one IP per line)
-*/
-/**
- * @author MAIA MARNAT MOUTRILLE STINDEL
- *
- */
 public class Client {
+
+	public static Socket socket = null;
+	public static Thread t1;
 	
-	/**
-	 * @param args
-	 * @throws UnknownHostException
-	 * @throws IOException
-	 * lancement de l'app
-	 */
-	public static void main(String[] args) throws UnknownHostException, IOException {
-		final int PORT =8888;
-		Socket s = new Socket("localhost", PORT);
-		InputStream in= s.getInputStream();
-		OutputStream out = s.getOutputStream();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+	public Client(String pseudoD,String msgP){
+	try {
+		
+		System.out.println("Demande de connexion");
+		String ip = Tracker.chercheIP(pseudoD);
+		socket = new Socket(ip, Tracker.cherchePort(pseudoD));
+		System.out.println("Connexion établie avec le serveur.");
+		OutputStream out = socket.getOutputStream();
 		PrintWriter writer = new PrintWriter(out);
-	    String commande ="5\n";
-		System.out.print("Envoi : "+commande);
-		writer.print(commande);
+		
+		writer.print(msgP);
 		writer.flush();
-		String reponse = reader.readLine();
-		System.out.println("Recu : "+ reponse);
-		commande ="xyz\n";
-		System.out.print("Envoi : "+commande); 
-		writer.print(commande);
-		writer.flush();
-		s.close();
+		socket.close();
+		
+
+	} catch (UnknownHostException e) {
+	  System.err.println("Impossible de se connecter à l'adresse "+socket.getLocalAddress());
+	} catch (IOException e) {
+	  System.err.println("Aucun serveur à l'écoute du port "+socket.getLocalPort());
 	}
+	
+	}
+
 }

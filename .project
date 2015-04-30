@@ -3,6 +3,7 @@
 	<name>Projet</name>
 	<comment></comment>
 	<projects>
+		<project>commons-net-3.3</project>
 		<project>jstl_1.2</project>
 	</projects>
 	<buildSpec>

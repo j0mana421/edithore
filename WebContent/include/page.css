@@ -1,0 +1,226 @@
+body {
+	background-color: #EBEBEB;
+	font-family: "Century Gothic Light", CenturyGothic, AppleGothic, sans-serif;
+}
+
+#header{
+	z-index: 10;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	left: 0px;
+    height: 80px;
+    text-align: center;
+    color: #FFF;
+    background-color: #2C2C2C;
+    border-bottom: 1px solid #000;
+    box-shadow: 0px 0px 3px 2px #000;
+}
+
+#bonjour {
+	width: 600px;
+	margin : 0px auto;
+	padding: 20px;
+	background-color: white;
+	border-top: 5px solid black;
+	border-bottom: 5px solid black;
+	font-size: 1.5em;
+}
+
+.center-header{
+    width: 600px;
+    margin: auto;
+}
+
+a{
+	vertical-align: middle;
+	background-color: #45AC9E;
+    height: 1em;
+    font-size: 1em;
+    color: #FFF;
+    border: medium none;
+    cursor: pointer;
+    border-radius: 5px;
+    line-height: 2em;
+    text-decoration: none;
+    font-style: normal;
+    font-family: sans-serif;
+    padding: 4px;
+}
+
+a:hover{
+	box-shadow: 0px 2px 3px #000 inset;
+}
+
+h1{
+    font-size: 1.3em;
+    border: medium none;
+    font-style: normal;
+    font-weight: 100;
+    
+}
+
+h2{
+    font-size: 1.3em;
+    border: medium none;
+    font-style: normal;
+    font-weight: bold;
+    font-family: "Century Gothic Light", CenturyGothic, AppleGothic, sans-serif;
+}
+
+#corps input[type=submit]{
+    vertical-align: middle;
+    background-color: #45AC9E;
+    height: 20px;
+    font-style: italic;
+    font-size: 1em;
+    color: #FFF;
+    border: medium none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+#header img{
+    float: left;
+}
+
+#header input[type=submit]{
+    background-color: #45AC9E;
+    height: 30px;
+    font-style: italic;
+    font-size: 1.1em;
+    color: #FFF;
+    border: medium none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 32px;
+}
+
+.form_supprimer {
+	display: inline-block;
+}
+
+.picto {
+	font-size: 1em;
+}
+
+input[type=submit]:hover{
+	box-shadow: 0px 2px 3px #000 inset;
+}
+
+#corps input[type=text]{
+    vertical-align: middle;
+    background-color: #D1D1D1;
+    height: 20px;
+    text-indent: 10px;
+    font-style: italic;
+    font-size: 1em;
+    color: #4C4C4C;
+    background-color: #D1D1D1;
+    border: medium none;
+    border-radius: 5px;
+}
+
+#header input[type=text], .header input[type=password]{
+    vertical-align: middle;
+    background-color: #D1D1D1;
+    height: 30px;
+    text-indent: 10px;
+    font-style: italic;
+    font-size: 1.1em;
+    color: #4C4C4C;
+    background-color: #D1D1D1;
+    border: medium none;
+    border-radius: 5px;
+    margin-left: 0px;
+}
+
+.cadre{
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-family: "Century Gothic Light", CenturyGothic, AppleGothic, sans-serif;
+    text-align: center;
+    background-color: white;
+}
+
+.cadre iframe {
+	width: 100%;
+	border: dashed 1px gray; 
+}
+
+.legendeCadre{
+    padding: 4px 10px;
+    margin-left: 5px;
+    margin-top: -25px;
+    font-family: "Century Gothic Light", CenturyGothic, AppleGothic, sans-serif;
+}
+
+.legende{
+    background-color: white;
+    padding: 0 10px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+#gauche table{
+    width: 100%;
+}
+
+hr{
+    height: 4px;
+    width: 500px;
+    background-color: #000;
+    border: none;
+}
+
+#corps{
+    margin-top: 100px;
+    width: 1020px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#gauche{
+    width: 700px;
+    display: inline-block;
+}
+
+#droite{
+    width: 300px;
+    display: inline-block;
+}
+
+.zone-recherche{
+    width: 250px;
+}
+
+.zone-recherche:hover, .header input[type=text]:hover{
+    box-shadow: 0px 0px 0px 1px #000, 0px 0px 4px #FFF;
+}
+
+#gauche table th{
+    background-color: #6D7F86;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#gauche table td{
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+
+textarea#editeur_de_texte {
+	width: 100%;
+	height:300px;
+	resize: vertical;
+}
+
+.form_inline {
+	display: inline-block;
+}

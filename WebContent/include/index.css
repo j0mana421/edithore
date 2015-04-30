@@ -1,0 +1,125 @@
+.header{
+	z-index: 10;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	left: 0px;
+    height: 130px;
+    text-align: center;
+    color: #FFF;
+    background-color: #2C2C2C;
+    border-bottom: 1px solid #000;
+    box-shadow: 0px 0px 3px 2px #000;
+}
+
+
+.center-header{
+    width: 500px;
+    margin: auto;
+}
+
+a{
+	vertical-align: middle;
+	background-color: #45AC9E;
+    height: 40px;
+    font-size: 18pt;
+    color: #FFF;
+    border: medium none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+    font-style: normal;
+    font-family: sans-serif;
+    padding: 4px;
+    margin-right: auto;
+}
+
+a:hover{
+	box-shadow: 0px 2px 3px #000 inset;
+}
+
+.centrage input[type=submit]{
+    vertical-align: middle;
+    background-color: #45AC9E;
+    height: 40px;
+    font-style: italic;
+    font-size: 18pt;
+    color: #FFF;
+    border: medium none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+input[type=submit]{
+    vertical-align: middle;
+    background-color: #45AC9E;
+    height: 30px;
+    font-style: italic;
+    font-size: 1.1em;
+    color: #FFF;
+    border: medium none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+input[type=submit]:hover{
+	box-shadow: 0px 2px 3px #000 inset;
+}
+
+.centrage p{
+    height: 40px;
+    width: 800px;
+    font-size: 2em;
+    border: medium none;
+    font-style: normal;
+    font-weight: 100;
+    font-family: "Century Gothic Light", CenturyGothic, AppleGothic, sans-serif;
+    margin-bottom: 100px;
+}
+
+.centrage input[type=text]{
+    vertical-align: middle;
+    background-color: #D1D1D1;
+    height: 40px;
+    text-indent: 10px;
+    font-style: italic;
+    font-size: 2em;
+    color: #4C4C4C;
+    background-color: #D1D1D1;
+    border: medium none;
+    border-radius: 5px;
+}
+
+.header input[type=text], .header input[type=password]{
+    vertical-align: middle;
+    background-color: #D1D1D1;
+    height: 30px;
+    text-indent: 10px;
+    font-style: italic;
+    font-size: 1.1em;
+    color: #4C4C4C;
+    background-color: #D1D1D1;
+    border: medium none;
+    border-radius: 5px;
+    margin-left: 0px;
+}
+
+.centrage{
+    z-index: 5;
+	width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.zone-recherche{
+    width: 250px;
+}
+
+.corps{
+    margin-top: 200px;
+}
+
+.zone-recherche:hover, .header input[type=text]:hover{
+    box-shadow: 0px 0px 0px 1px #000, 0px 0px 4px #FFF;
+}

@@ -1,15 +1,10 @@
 package projet;
 
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -19,7 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import java.util.UUID;
+
+import org.apache.commons.net.ftp.FTPClient;
 /**
  * @author MAIA MARNAT MOUTRILLE STINDEL
  *
@@ -28,14 +24,13 @@ import java.util.UUID;
 @MultipartConfig
 public class AjoutFic extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    RequetesSQL dbc= new RequetesSQL();
    
-    /**
-     * ajout de fichier
-     */
-    public AjoutFic() {
-        super();
-    }
+	/**
+	 * ajout de fichier
+	 */
+	public AjoutFic() {
+		super();
+	}
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
@@ -55,51 +50,40 @@ public class AjoutFic extends HttpServlet {
 		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 		String[] tab = nomAff.split("\\.");
 		String type = tab[1].substring(0,tab[1].length()-1);
+		String nomStock = UUID.randomUUID().toString()+".txt";
 		
-		String path = getServletContext().getRealPath("/fichiers/");
-        String nomStock = UUID.randomUUID().toString()+".txt";
+		// AJOUT DE LA REFERENCE DU FICHIER DANS LA BD
 		try{
-			dbc.addFichier(pseudo,nomAff,nomStock, description, type, sqlDate);
+			RequetesSQL.addFichier(pseudo,nomAff,nomStock, description, type, sqlDate);
 			res.sendRedirect("Perso.jsp");
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {out.close();}
+		} finally {out.close();}        
+
 		
-//		FileOutputStream fileOut = new FileOutputStream(new File("test_upload.txt"));
-//		int read = 0;
-//        final byte[] bytes = new byte[1024];
-//        while ((read = in.read(bytes)) != -1) {
-//        	fileOut.write(bytes, 0, read);
-//        	System.out.println("read:"+read);
-//        }
-        
-        
-        String content = "This is the content to write into file";
-        
-        
-		File file = new File(path+nomStock);
-		// if file doesnt exists, then create it
-		if (!file.exists()) {
-			file.createNewFile();
-		}
-		System.out.println("svg du fichier...");
+		// UPLOAD DU FICHIER PHYSIQUE SUR LE SERVEUR DISTANT 
+		System.out.println("connexion au serveur...");
+		FTPClient client = new FTPClient();
+		client.connect("ftp.byethost15.com");
+		if (client.login("b7_16124912", "moumoutte42rpz")) System.out.println(" done."); 
+		else System.out.println(" ECHEC !");
 		
-		FileWriter fw = new FileWriter(file.getAbsoluteFile());
-		System.out.println("file.getAbsoluteFile() = "+file.getAbsoluteFile());
-		BufferedWriter bw = new BufferedWriter(fw);
-		bw.write(content);
-		bw.close();
-        
-		// fileOut.close();
+		System.out.println("upload du fichier...");
+		if (client.storeFile("htdocs/tomcat_files/"+nomStock, in)) System.out.println(" done.");
+		else System.out.println(" ECHEC !");		
+		
+		client.logout();
+
+
 	}
 
 	private static String getNomFichier( Part part ) {
-	    for ( String contentDisposition : part.getHeader( "content-disposition" ).split( ";" ) ) {
-	        if ( contentDisposition.trim().startsWith("filename") ) {
-	            return contentDisposition.substring( contentDisposition.indexOf( '=' ) + 1 );
-	        }
-	    }
-	    return null;
+		for (String contentDisposition : part.getHeader( "content-disposition" ).split( ";" )) {
+			if (contentDisposition.trim().startsWith("filename")) {
+				return contentDisposition.substring(contentDisposition.indexOf('=') + 1);
+			}
+		}
+		return null;
 	}
 	
 }

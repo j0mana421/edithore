@@ -19,7 +19,6 @@ public class Connect {
 		try{
 			//c = DriverManager.getConnection(url, "b7_16124912", "moumoutte42rpz");
 			c = DriverManager.getConnection(url, "root", "root");
-			System.out.println("Connexion réussie.\n");
 			st = c.createStatement();
 		}catch (SQLException e){
 			System.out.println("Connexion échouée.\n");

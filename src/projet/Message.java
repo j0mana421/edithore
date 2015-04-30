@@ -2,30 +2,38 @@ package projet;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author MAIA MARNAT MOUTRILLE STINDEL
  * un message de chatte
  */
 public class Message {
-	private static int nbMessages;
-	@SuppressWarnings("unused")
-	private final int NUM_MESSAGE = nbMessages++;
+	private int idMessage;
 	private String pseudo;
 	private String message;
-	private String heure;
+	private Date date;
+	
+	/**
+	 * @param idMessage
+	 * @param pseudo
+	 * @param message
+	 * @param date
+	 */
+	Message(int idMessage, String pseudo, String message, Date date) {
+		this.idMessage = idMessage;
+		this.pseudo = pseudo;
+		this.message = message;
+		this.date = date;
+	}
 	
 	Message(String pseudo, String message) {
 		this.pseudo = pseudo;
 		this.message = message;
-		
-		Calendar cal = Calendar.getInstance();
-    	cal.getTime();
-    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-    	this.heure = sdf.format(cal.getTime());
+		this.date = new Date();
 	}
-	
+
 	public String toString() {
-		return ("["+heure+"] "+pseudo+" : "+message);
+		return ("["+date+"] "+pseudo+" : "+message);
 	}
 }

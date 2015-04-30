@@ -19,19 +19,21 @@ import javax.swing.JOptionPane;
  */
 public class Connexion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    /** l'identifiant de l'utilisateur */
-    public static String identifiant;
-    
-    /** mot de passe */
-    public static String mdp;
-    RequetesSQL dbc= new RequetesSQL();
-   
-    /**
-     * Connexion à l'application
-     */
-    public Connexion() {
-        super();
-    }
+	/** l'identifiant de l'utilisateur */
+	public static String identifiant;
+	
+	/** mot de passe */
+	public static String mdp;
+	
+	RequetesSQL dbc= new RequetesSQL();
+	public ConnexionSocket cs;
+
+	/**
+	 * Connexion à l'application
+	 */
+	public Connexion() {
+		super();
+	}
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
@@ -42,24 +44,24 @@ public class Connexion extends HttpServlet {
 		identifiant=req.getParameter("identifiant");
 		mdp=req.getParameter("motdepasse");
 		System.out.println("REM ADR : "+req.getRemoteAddr());
-		Tracker.ajouteMachine(identifiant, req.getRemoteAddr());
 		try {
 			if(RequetesSQL.verifUtilisateur(identifiant, mdp)){
+				Tracker.ajouteMachine(identifiant, req.getRemoteAddr(),8000);
 				HttpSession session = req.getSession();
 				session.setAttribute("nom",identifiant);
+				session.setAttribute("mdp",mdp);
 				PrintWriter out= res.getWriter();	
 				try{
-					//res.sendRedirect("Connecte.html");
+					Serveur srv = new Serveur(Tracker.cherchePort(identifiant), identifiant);
+					this.cs = srv.cs;
+					session.setAttribute("ConnexionSocket", cs);
 					res.sendRedirect("Perso.jsp");
-					//JOptionPane.showMessageDialog(null,"Bonjour "+identifiant);
 				} finally {out.close();}
 			}
 			else {
 				PrintWriter out= res.getWriter();	
 				try{
-					res.sendRedirect("index.html");
-					System.out.println("impossible de se connecter");
-					JOptionPane.showMessageDialog(null,"Le login ou le mot de passe est incorrect !");
+					res.sendRedirect("ErreurConnexion.html");
 				} finally {out.close();}
 			}
 		} catch (ClassNotFoundException | SQLException e) {

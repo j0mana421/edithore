@@ -1,0 +1,40 @@
+<html>
+<head>
+<meta name="author"
+	content="MAIA Anthony, MARNAT Josselin, MOUTRILLE Romain, STINDEL Hugo">
+<meta name="description" content="page d'accueil">
+<meta name="keywords" content="éditore++, editeur, edition, fichier">
+<meta charset="utf-8">
+<title>Editore++</title>
+<link rel="stylesheet" type="text/css" href="include/index.css">
+</head>
+<body>
+	<div class="header">
+		<div class="center-header">
+			<img src="include/titre.png"><br>
+			<form action="Connexion" method="post" name="index">
+				<input id="zone-texte" type="text" name="identifiant" size=15
+					placeholder="identifiant"></input> <input id="zone-texte"
+					type="password" name="motdepasse" size=15
+					placeholder="mot de passe"></input> <input type="submit" value="OK"></input>
+			</form>
+		</div>
+	</div>
+	<div class="corps">
+		<div class="centrage">
+			<p>
+				Editore++ est un utilitaire dédié à la création <br />et à
+				l'édition coopérative de fichiers.
+			</p>
+			<br /> <a href="formulaire_inscription.html" target="_blank">INSCRIPTION</a>
+			<br /> <br /> <input type="text" name="recherche-pseudo"
+				placeholder="Recherche utilisateur" size=30></input> <input
+				type="submit" value="OK"></input>
+		</div>
+	</div>
+	<script type="text/javascript">
+		alert("Le login ou le mot de passe est incorrect !");
+		window.location = "index.html";
+	</script>
+</body>
+</html>
