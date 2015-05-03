@@ -9,19 +9,14 @@ import java.util.ArrayList;
  * tracker pour les machines en p2p
  */
 public class Tracker {
-	//private static ArrayList<Machine> listeMachines;
 	private static ArrayList<Machine> listeMachines = new ArrayList<Machine>();
-	
 	
 	/**
 	 * @param nom de l'user
 	 * @param adresseIP de l'user
+	 * @param port le port
 	 */
 	public static void ajouteMachine(String nom, String adresseIP,int port) {
-		for	(int i = 0; i < listeMachines.size(); i++) {
-			if(listeMachines.get(i).adresseIP.compareTo(adresseIP)==0)
-				port++;
-		}
 		listeMachines.add(new Machine(nom, adresseIP,port));
 		System.out.println("Liste des machines :");
 		for	(int i = 0; i < listeMachines.size(); i++) {
@@ -62,6 +57,16 @@ public class Tracker {
 		}
 		return(s);
 	}
+	
+	
+	public static void supprMachine(String nom) {
+		for (int i = 0; i < listeMachines.size(); i++) {
+			if (listeMachines.get(i).nom.compareTo(nom) == 0) {
+				listeMachines.remove(i);
+			}
+		}
+	}
+	
 }
 
 

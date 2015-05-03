@@ -85,8 +85,8 @@ input[type=submit]:hover{
     font-style: italic;
     font-size: 2em;
     color: #4C4C4C;
-    background-color: #D1D1D1;
-    border: medium none;
+    background-color: #EEEEEE;
+    border: solid 1px #65A7F2;
     border-radius: 5px;
 }
 
@@ -98,8 +98,8 @@ input[type=submit]:hover{
     font-style: italic;
     font-size: 1.1em;
     color: #4C4C4C;
-    background-color: #D1D1D1;
-    border: medium none;
+    background-color: #EEEEEE;
+    border: solid 1px #65A7F2;
     border-radius: 5px;
     margin-left: 0px;
 }

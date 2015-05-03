@@ -52,7 +52,9 @@
 				<div class="legendeCadre">
 					<span class="legende">Liste de vos fichiers</span>
 				</div>
-				<%=VueSQL.listeFichiers(RequetesSQL.listeFichiers(pseudo))%>
+				<div id="liste_fichiers">
+					<%=VueSQL.listeFichiers(RequetesSQL.listeFichiers(pseudo))%>
+				</div>
 			</div>
 
 			<div class="cadre">
@@ -66,11 +68,10 @@
 					<input type="submit" value="Envoyer" /> <br />
 				</form>
 			</div>
-			<br />
 			<div class="cadre">
 				<form action="SearchU" method="post">
 					<div class="legendeCadre">
-						<span class="legende">Recherche de gens</span>
+						<span class="legende">Recherche d'utilisateurs</span>
 					</div>
 					<input type="text" name="ru" placeholder="Recherche utilisateur"
 						size=30></input> <input type="submit" value="OK"></input>
@@ -78,7 +79,7 @@
 			</div>
 		</div>
 		<div id="droite">
-			<div class="cadre mp">
+			<div class="cadre" id="messages_prives">
 				<div class="legendeCadre">
 					<span class="legende">Messages privés</span>
 				</div>
@@ -89,13 +90,11 @@
 					<input type="submit" value="Envoyer MP" />
 				</form>
 			</div>
-			<br><br><br><br>
-			<div class="cadre">
+			<div class="cadre" id="chat_application">
 				<div class="legendeCadre">
 					<span class="legende">Chat de l'application</span>
 				</div>
 				<form action="/Projet/SendMessage" method="post">
-					<br />
 					<iframe src="ChatApplication.jsp"></iframe>
 					<br /> <input type="text" name="txt"
 						placeholder="votre message ici" /> <input type="submit"

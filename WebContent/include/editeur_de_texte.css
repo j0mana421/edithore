@@ -1,0 +1,23 @@
+#editeur_de_texte, #resultat {
+	width: 650px;
+	height: 200px;
+	margin: 0 auto;
+	resize: vertical;
+	border: solid 1px gray;
+	border-radius: 5px;
+	overflow: scroll;
+	text-align: left;
+}
+
+.bouton_couleur {
+	width: 20px;
+	height: 20px;
+	display: inline; 
+	border: solid 1px gray;
+	border-radius: 10px;
+	opacity: 0.5;
+}
+
+.bouton_couleur:hover {
+	opacity: 1;
+}

@@ -29,7 +29,7 @@ public class RequetesSQL {
 		int num = Integer.parseInt((rs.getString(1)==null?"0":rs.getString(1)))+1;
 		chaine= "INSERT INTO Utilisateurs VALUES ('"+num+"', '"+pseudo+"','"+mail+"','"+mdp+"')";
 		c.reqSQL(chaine, 'm');
-		// c.close();
+		c.close();
 		return chaine;
 	}
 	
@@ -47,7 +47,7 @@ public class RequetesSQL {
 			c.close();
 			return true;
 		}
-		// c.close();
+		c.close();
 		return false;
 	}
 	
@@ -58,16 +58,16 @@ public class RequetesSQL {
 			c.close();
 			return true;
 		}
-		// c.close();
+		c.close();
 		return false;
 	}
 	
-	public static ResultSet searchU(String pseudo) throws ClassNotFoundException, SQLException{
-		c = new Connect();
-		ResultSet rs = c.reqSQL("SELECT id_u FROM utilisateurs WHERE pseudo='"+pseudo+"'", 's');
-		c.close();
-		return rs;
-	}
+//	public static ResultSet searchU(String pseudo) throws ClassNotFoundException, SQLException{
+//		c = new Connect();
+//		ResultSet rs = c.reqSQL("SELECT id_u FROM utilisateurs WHERE pseudo='"+pseudo+"'", 's');
+//		c.close();
+//		return rs;
+//	}
 
 	private static int getIdUser(String pseudo) {
 		int id = 1;
@@ -81,6 +81,7 @@ public class RequetesSQL {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
+		c.close();
 		return(id);
 	}
 	
@@ -95,7 +96,7 @@ public class RequetesSQL {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	public static void addFichier(String pseudo, String nomAff, String nomStock, String description, String type, java.sql.Date date) throws SQLException, IOException{
+	public static void addFichier(String pseudo, String nomAff, String nomStock, String description, String type, java.sql.Date dateCreation) throws SQLException, IOException{
 		try {
 			c=new Connect();
 		} catch (ClassNotFoundException | SQLException e) {
@@ -103,23 +104,24 @@ public class RequetesSQL {
 			e.printStackTrace();
 		}
 		
+		// insertion dans Fichiers
 		ResultSet rs =c.reqSQL("SELECT MAX(id) FROM Fichiers",'s');
 		rs.next();
 		int idFic = Integer.parseInt((rs.getString(1)==null?"0":rs.getString(1)))+1;
-		
 		rs = c.reqSQL("SELECT id FROM Utilisateurs WHERE pseudo=\""+pseudo+"\"",'s');
 		rs.next();
 		int idCreat = Integer.parseInt(rs.getString("id"));
-		int idDernierUser = idCreat; // TODO
-		
-		// insertion dans Fichiers
-		String req= "INSERT INTO Fichiers VALUES ('"+idFic+"', '"+idCreat+"','"+idDernierUser+"','"+nomAff+"','"+nomStock+"','"+description+"','"+type+"','"+date+"')";
+		int idDernierUser = idCreat;
+		String req= "INSERT INTO Fichiers VALUES ('"+idFic+"', '"+idCreat+"','"+idDernierUser+"','"+nomAff+"','"+nomStock+"','"+description+"','"+type+"','"+dateCreation+"',NULL)";
 		c.reqSQL(req, 'm');
 		
-		// création du droit au fichier
-		req = "INSERT INTO DroitsFichiers VALUES (NULL,'"+idCreat+"','"+idFic+"')";
+		// création du droit au fichier		
+		rs =c.reqSQL("SELECT MAX(id) FROM DroitsFichiers",'s');
+		rs.next();
+		int idDroit = Integer.parseInt((rs.getString(1)==null?"0":rs.getString(1)))+1;
+		req = "INSERT INTO DroitsFichiers VALUES ("+idDroit+",'"+idCreat+"','"+idFic+"')";
 		c.reqSQL(req, 'm');
-		// c.close();
+		c.close();
 	}
 	
 	/**
@@ -135,10 +137,17 @@ public class RequetesSQL {
 			String req = "SELECT id FROM Utilisateurs WHERE pseudo=\""+nomDernierUser+"\"";
 			ResultSet rs = c.reqSQL(req,'s');
 			rs.next();
-			int idDernierUser = Integer.parseInt(rs.getString("id"));
+			int idDernierUser = rs.getInt("id");
 			
 			req = "UPDATE Fichiers SET idDernierUser="+idDernierUser+" WHERE id="+idFichier;
+			System.out.println("REQ: "+req);
 			c.reqSQL(req, 'm');
+			
+			req = "UPDATE Fichiers SET dateModification=LOCALTIMESTAMP WHERE id="+idFichier;
+			System.out.println("REQ: "+req);
+			c.reqSQL(req, 'm');
+			c.close();
+
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -154,6 +163,7 @@ public class RequetesSQL {
 			c.reqSQL("DELETE FROM Fichiers WHERE id="+idFichier,'m');
 			c.reqSQL("DELETE FROM DroitsFichiers WHERE idFichier="+idFichier,'m');
 			c.reqSQL("DELETE FROM CommentairesFichiers WHERE idFichier="+idFichier,'m');
+			c.close();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -163,22 +173,41 @@ public class RequetesSQL {
 	 * @param user le nom de l'utilisateur
 	 * @return le tableau des fichiers accessibles à un utilisateur
 	 */
-	public static ResultSet listeFichiers(String user) {
+	public static ArrayList<Fichier> listeFichiers(String user) {
 		String req = "SELECT *"
 			+ "FROM Fichiers, DroitsFichiers, Utilisateurs"
 			+ " WHERE Utilisateurs.pseudo = '"+user+"'"
 			+ " AND DroitsFichiers.idUser = Utilisateurs.id"
 			+ " AND DroitsFichiers.idFichier = Fichiers.id";
 		// System.out.println(req);
-		ResultSet rs = null;
 		try {
 			c = new Connect();
-			rs = c.reqSQL(req, 's');
-			// c.close();
+			ArrayList<Fichier> fichiers = new ArrayList<Fichier>();
+			ResultSet rs = c.reqSQL(req, 's');
+			while(rs.next()) {
+				int idFichier = Integer.parseInt(rs.getString("idFichier"));
+				String nomAffichage = rs.getString("nomAffichage");
+				int idCreateur = rs.getInt("idCreateur");
+				String nomCreateur = RequetesSQL.getNomUtilisateur(idCreateur);
+				String dateCreation = rs.getTimestamp("dateCreation").toString();
+				String nomModificateur = RequetesSQL.getNomUtilisateur(rs.getInt("idDernierUser"));
+				String dateModification;
+				try {
+					dateModification = rs.getTimestamp("dateModification").toString();
+				} catch (java.lang.NullPointerException e) {
+					dateModification = "(pas de modif)";
+				}
+				String description = rs.getString("description");
+				Fichier fichier = new Fichier(idFichier, nomAffichage, nomCreateur, dateCreation, nomModificateur, dateModification, description);
+				System.out.println(fichier);
+				fichiers.add(fichier);
+			}
+			c.close();
+			return(fichiers);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		return(rs);
+		return(null);
 	}
 	
 	public static String getNomUtilisateur(int idUser) {
@@ -187,8 +216,9 @@ public class RequetesSQL {
 			c = new Connect();
 			ResultSet rs = c.reqSQL(req, 's');
 			rs.next();
-			return(rs.getString("pseudo"));
-			// c.close();
+			String pseudo = rs.getString("pseudo");
+			c.close();
+			return(pseudo);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -242,19 +272,26 @@ public class RequetesSQL {
 		}
 	}
 	
-	public static ResultSet listeContributeurs(int idFichier) {
-		ResultSet rs = null;
+	public static ArrayList<String> listeContributeurs(int idFichier) {
+		ArrayList<String> liste = new ArrayList<String>();
 		try {
 			c = new Connect();
 			String req = "SELECT pseudo FROM Fichiers, DroitsFichiers, Utilisateurs"
 				+ " WHERE Fichiers.id = DroitsFichiers.idFichier"
 				+ " AND Utilisateurs.id = DroitsFichiers.idUser"
 				+ " AND Fichiers.id = "+idFichier;
-			rs = c.reqSQL(req,'s');
+			ResultSet rs = c.reqSQL(req,'s');
+			String pseudo;
+			while(rs.next()) {
+				pseudo = rs.getString("pseudo");
+				System.out.println("contributeur : "+pseudo);
+				liste.add(pseudo);
+			}
+			c.close();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		return(rs);
+		return(liste);
 	}
 	
 	/**
@@ -271,6 +308,35 @@ public class RequetesSQL {
 				+ " ORDER BY date DESC"
 				+ " LIMIT "+nbMax,'s');
 		while(rs.next()){
+			int idMessage = rs.getInt("id");
+			String nomUser = rs.getString("pseudo");
+			String contenu = rs.getString("message");
+			Date date = rs.getDate("date");
+			Message message = new Message(idMessage, nomUser, contenu, date);
+			listeMessages.add(message);
+		}
+		c.close();
+
+		return listeMessages;
+		
+	}
+	
+	/**
+	 * @param idFichier
+	 * @param nbMax
+	 * @return la liste des messages
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public static ArrayList<Message> recupCommentaires(int idFichier, int nbMax) throws ClassNotFoundException, SQLException{
+		ArrayList<Message> listeMessages = new ArrayList<Message>();
+		c = new Connect();
+		ResultSet rs = c.reqSQL("SELECT * FROM CommentairesFichiers,Utilisateurs"
+				+ " WHERE CommentairesFichiers.idUser = Utilisateurs.id"
+				+ " AND idFichier="+idFichier
+				+ " ORDER BY date DESC"
+				+ " LIMIT "+nbMax,'s');
+		while(rs.next()){
 			int idMessage = Integer.parseInt(rs.getString("id"));
 			String nomUser = rs.getString("pseudo");
 			String contenu = rs.getString("message");
@@ -278,6 +344,8 @@ public class RequetesSQL {
 			Message message = new Message(idMessage, nomUser, contenu, date);
 			listeMessages.add(message);
 		}
+		c.close();
+
 		return listeMessages;
 	}
 
@@ -289,9 +357,10 @@ public class RequetesSQL {
 			int idMessage = Integer.parseInt((rs.getString(1)==null?"0":rs.getString(1)))+1;
 			int idUser = getIdUser(pseudo);
 			
-			String req = "INSERT INTO ChatApplication VALUES ("+idMessage+", "+idUser+",'"+txt+"',CURRENT_TIMESTAMP)";
+			String req = "INSERT INTO ChatApplication VALUES ("+idMessage+", "+idUser+",'"+txt+"',LOCALTIMESTAMP)";
 			System.out.println("REQ INSERT : \n"+req);
 			c.reqSQL(req, 'm');
+			c.close();
 			
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();

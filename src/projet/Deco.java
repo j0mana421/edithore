@@ -33,6 +33,8 @@ public class Deco extends HttpServlet {
 		PrintWriter out= res.getWriter();
 		ConnexionSocket cs = ((ConnexionSocket) req.getSession().getAttribute("ConnexionSocket"));
 		cs.killServeur();
+		String pseudo = ((String) req.getSession().getAttribute("nom"));
+		Tracker.supprMachine(pseudo);
 		req.getSession().invalidate();
 		try{
 			res.sendRedirect("index.html");

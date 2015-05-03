@@ -1,21 +1,21 @@
 function selectionne_tout() {
-	var editeur = document.getElementById('editeur');
+	var editeur = document.getElementById('editeur_de_texte');
 	// var deb = editeur.selectionStart;
 	// var fin = editeur.selectionEnd;
 	editeur.setSelectionRange(0,editeur.value.length);
 }
 
 function efface_tout() {
-	document.getElementById('editeur').value = "";
+	document.getElementById('editeur_de_texte').value = "";
 	met_a_jour();
 }
 
 function met_a_jour() {
-	document.getElementById('resultat').innerHTML = document.getElementById('editeur').value;
+	document.getElementById('resultat').innerHTML = document.getElementById('editeur_de_texte').value;
 }
 
 function balise(mon_tag) {
-	var editeur = document.getElementById('editeur');
+	var editeur = document.getElementById('editeur_de_texte');
 	var deb = editeur.selectionStart;
 	var fin = editeur.selectionEnd;
 	var nl;
@@ -33,7 +33,7 @@ function balise(mon_tag) {
 }
 
 function balise_simble(mon_tag) {
-	var editeur = document.getElementById('editeur');
+	var editeur = document.getElementById('editeur_de_texte');
 	var fin = editeur.selectionEnd;
 	var txt =
 		editeur.value.substring(0,fin)+'<'+mon_tag+'>\n'
@@ -45,7 +45,7 @@ function balise_simble(mon_tag) {
 }
 
 function tage(mon_tag, element) {
-	var editeur = document.getElementById('editeur');
+	var editeur = document.getElementById('editeur_de_texte');
 	var deb = editeur.selectionStart;
 	var fin = editeur.selectionEnd;
 	var txt =
@@ -59,7 +59,7 @@ function tage(mon_tag, element) {
 }
 
 function colorise(texte_fond, ma_couleur) {
-	var editeur = document.getElementById('editeur');
+	var editeur = document.getElementById('editeur_de_texte');
 	var deb = editeur.selectionStart;
 	var fin = editeur.selectionEnd;
 	if (texte_fond == "texte") var type = "color";

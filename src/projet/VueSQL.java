@@ -21,47 +21,29 @@ public class VueSQL {
 	 * @param rs le ResultSet
 	 * @return une table
 	 */
-	public static String listeFichiers(ResultSet rs) {
-		String s = "<table>"
-		  + "<tr><th>nom</th><th>description</th>"
-		  + "<th>créateur</th><th>dernierUser</th>"
-		  + "<th>type</th><th>date</th><th>actions</th></tr>";
-		try {
-			while(rs.next()) {
-				s += "<tr>";
-				s += "<td>"+rs.getString("nomAffichage")+"</td>";
-				s += "<td>"+rs.getString("description")+"</td>";
-				s += "<td>"+RequetesSQL.getNomUtilisateur(rs.getInt("idCreateur"))+"</td>";
-				s += "<td>"+RequetesSQL.getNomUtilisateur(rs.getInt("idDernierUser"))+"</td>";
-				s += "<td>"+rs.getString("type")+"</td>";
-				s += "<td>"+rs.getString("date")+"</td>";
-				s += "<td>"
-					+ "<a class='picto' href=\"EditeurDeTexte.jsp?idFichier="+rs.getString("idFichier")+"\">"
-					+ "✍</a>"
-					+ "<form class='form_supprimer' action='SupprimeFichier' method='post'>"
-						+ "<input type='hidden' name='idFichier' value='"+rs.getString("idFichier")+"'/>"
-						+ "<input class='picto' type='submit' value='×'/>"
-					+ "</form>"
-					+ "</td>";
-				s += "</tr>";
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public static String listeFichiers(ArrayList<Fichier> fichiers) {
+		String s = "";
+		for (Fichier fichier : fichiers) {
+			s += "<div class='fichier conteneur'>"
+					+ "<div class='fichier titre'>"+fichier.nomAffichage+"</div>"
+					+ "<div class='fichier boutons'>"
+						+"<a class='picto' href=\"EditeurDeTexte.jsp?idFichier="+fichier.idFichier+"\">✍</a>"
+						+ "<form class='form_supprimer' action='SupprimeFichier' method='post'>"
+							+ "<input type='hidden' name='idFichier' value='"+fichier.idFichier+"'/>"
+							+ "<input class='picto' type='submit' value='×'/>"
+						+ "</form>"
+					+ "</div>"
+				+ "<hr>"
+					+ "créé par "+fichier.nomCreateur
+					+ ", le "+fichier.dateCreation
+					+ "<br>"
+					+ "modifié par "+fichier.nomModificateur
+					+ ", le "+fichier.dateModification
+				+ "<hr>"
+					+ "<div class='fichier description'>"+fichier.description+"</div>"
+			+ "</div>";
 		}
-		
-		s += "</table>";
 		return(s);
-	}
-	
-	public static String nomFichier(ResultSet rs) {
-		String nom = null;
-		try {
-			rs.next();
-			nom = rs.getString("nomStockage");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return (nom);
 	}
 	
 	public String contenuFichier(String nomStock) {
@@ -77,7 +59,7 @@ public class VueSQL {
 			BufferedReader br = new BufferedReader(is);
 			String read = br.readLine();
 			while(read != null) {
-			    // System.out.println(read);
+			    System.out.println("--"+read);
 			    sb.append(read);
 			    sb.append('\n');
 			    read = br.readLine();
@@ -91,17 +73,10 @@ public class VueSQL {
 		return(s);
 	}
 	
-	public static String listeContributeurs(ResultSet rs) {
+	public static String listeContributeurs(ArrayList<String> liste) {
 		String s = "";
-		String pseudo;
-		
-		try {
-			while(rs.next()) {
-				pseudo = rs.getString("pseudo");
-				s += "<a href='Personne.jsp?pseudo="+pseudo+"'>"+pseudo+"</a> ";
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		for (String pseudo : liste) {
+			s += "<a href='Personne.jsp?pseudo="+pseudo+"'>"+pseudo+"</a> ";
 		}
 		return(s);
 	}

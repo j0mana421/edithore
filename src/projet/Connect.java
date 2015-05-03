@@ -14,11 +14,11 @@ public class Connect {
 		}catch (ClassNotFoundException e){
 		    e.printStackTrace();
 		} 
-		String url="jdbc:mysql://localhost:8889/projet";
-		//String url ="jdbc:mysql://sql105.byethost7.com/b7_16124912_0";
+		//String url="jdbc:mysql://localhost:8889/projet";
+		String url ="jdbc:mysql://sql5.freesqldatabase.com:3306/sql575805";
 		try{
-			//c = DriverManager.getConnection(url, "b7_16124912", "moumoutte42rpz");
-			c = DriverManager.getConnection(url, "root", "root");
+			c = DriverManager.getConnection(url, "sql575805", "bJ6!aB4!");
+			// c = DriverManager.getConnection(url, "root", "root");
 			st = c.createStatement();
 		}catch (SQLException e){
 			System.out.println("Connexion échouée.\n");

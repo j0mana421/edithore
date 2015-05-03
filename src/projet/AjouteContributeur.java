@@ -22,6 +22,7 @@ public class AjouteContributeur extends HttpServlet {
 		String userEnPlus = request.getParameter("userEnPlus");
 		System.out.println("ajouteContributeur("+idFichier+","+userEnPlus+")");
 		RequetesSQL.ajouteConstributeur(idFichier, userEnPlus);
+		response.sendRedirect("EditeurDeTexte.jsp?idFichier="+idFichier);
 	}
 
 }

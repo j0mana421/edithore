@@ -118,7 +118,7 @@ input[type=submit]:hover{
     font-size: 1em;
     color: #4C4C4C;
     background-color: #D1D1D1;
-    border: medium none;
+    border: solid 1px #65A7F2;
     border-radius: 5px;
 }
 
@@ -131,7 +131,7 @@ input[type=submit]:hover{
     font-size: 1.1em;
     color: #4C4C4C;
     background-color: #D1D1D1;
-    border: medium none;
+    border: solid 1px #65A7F2;
     border-radius: 5px;
     margin-left: 0px;
 }
@@ -160,10 +160,10 @@ input[type=submit]:hover{
 }
 
 .legende{
+	border: solid 1px #65A7F2;
     background-color: white;
     padding: 0 10px;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
+    border-radius: 5px;
 }
 
 #gauche table{
@@ -171,7 +171,7 @@ input[type=submit]:hover{
 }
 
 hr{
-    height: 4px;
+    height: 1px;
     width: 500px;
     background-color: #000;
     border: none;
@@ -187,11 +187,13 @@ hr{
 
 #gauche{
     width: 700px;
+    position: relative;
     display: inline-block;
 }
 
 #droite{
     width: 300px;
+    position: relative;
     display: inline-block;
 }
 
@@ -203,24 +205,56 @@ hr{
     box-shadow: 0px 0px 0px 1px #000, 0px 0px 4px #FFF;
 }
 
-#gauche table th{
-    background-color: #6D7F86;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-#gauche table td{
-    border-left: 1px solid #000000;
-    border-right: 1px solid #000000;
-    border-bottom: 1px solid #000000;
-}
-
-textarea#editeur_de_texte {
-	width: 100%;
-	height:300px;
-	resize: vertical;
-}
-
 .form_inline {
 	display: inline-block;
+}
+
+/* CHAT DE L'APPLICATION */
+#chat_application {
+	/* height: 500px; */
+}
+
+#messages_prives {
+	
+}
+
+
+/* AFFICHAGE DES FICHEIRS */
+
+#liste_fichiers {
+	height: 300px;
+	overflow: scroll;
+	/* border: solid 1px green; */
+}
+
+.fichier {
+	display: inline-block;
+	/* border: solid 1px blue; */
+}
+
+.fichier.titre {
+	font-weight: bold;
+	font-size: 18pt;
+}
+
+.fichier hr {
+	background-color: #DDDDDD;
+}
+
+.fichier.conteneur {
+	width: 600px;
+	margin: 10px;
+	padding: 10px;
+	text-align: left;
+	border: solid 1px #AAAAAA;
+	border-radius: 5px;
+}
+
+.fichier.conteneur hr {
+	width: 580px;
+}
+
+.fichier.boutons {
+	float: right;
+	/* border: solid 1px blue; */
 }

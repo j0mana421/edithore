@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import org.apache.commons.net.ftp.FTPClient;
+
 /**
  * @author MAIA MARNAT MOUTRILLE STINDEL
  *
@@ -63,6 +64,7 @@ public class AjoutFic extends HttpServlet {
 		
 		// UPLOAD DU FICHIER PHYSIQUE SUR LE SERVEUR DISTANT 
 		System.out.println("connexion au serveur...");
+		
 		FTPClient client = new FTPClient();
 		client.connect("ftp.byethost15.com");
 		if (client.login("b7_16124912", "moumoutte42rpz")) System.out.println(" done."); 

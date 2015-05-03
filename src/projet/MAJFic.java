@@ -27,9 +27,9 @@ public class MAJFic extends HttpServlet {
 		String titre = request.getParameter("titre");
 		String texte = request.getParameter("texte");
 		int idFichier = Integer.parseInt(request.getParameter("idFichier"));
-		String nomDernierUser = request.getParameter("nomDernierUser");
+		String nom = (String) request.getSession().getAttribute("nom");
 		
-		RequetesSQL.majDernierUser(idFichier, nomDernierUser);
+		RequetesSQL.majDernierUser(idFichier, nom);
 
 		System.out.println("connexion au serveur...");
 		FTPClient client = new FTPClient();
